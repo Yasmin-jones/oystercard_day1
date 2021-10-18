@@ -1,18 +1,19 @@
-# frozen_string_literal: true
-
 class Oystercard
   attr_reader :balance
 
-  AMOUNT_CAPACITY = 90
+  MAX_CARD_BALANCE = 90
 
   def initialize
     @balance = 0
   end
 
   def top_up(amount)
-    message_error = 'Maximum balance exceeded'
-    raise message_error if amount + balance > AMOUNT_CAPACITY
-
+    error_message = 'Maximum balance exceeded'
+    raise error_message if amount + balance > MAX_CARD_BALANCE
     @balance += amount
+  end
+
+  def deduct(amount)
+    @balance -= amount
   end
 end
