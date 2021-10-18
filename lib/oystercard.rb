@@ -7,14 +7,13 @@ class Oystercard
 
     def initialize
         @balance = 0 
-    
     end 
 
     def top_up(amount)
+        
+        message_error = 'Maximum balance exceeded'
+        raise message_error if  amount + balance > AMOUNT_CAPACITY
         @balance += amount
-        message_error = 'Error, maximum top-up amount is £90'
-        raise message_error if @balance > AMOUNT_CAPACITY
-       
     end 
 
 end 
