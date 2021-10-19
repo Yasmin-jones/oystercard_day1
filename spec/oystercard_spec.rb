@@ -25,9 +25,12 @@ describe Oystercard do
     end
   end
 
-   describe '#Journey' do 
-    let (:station_double) { double('London bridge') }
-    let (:station_double_exit) { double('Bank') }
+  describe 'Can touch in and touch out' do
+   
+    describe '#Journey' do 
+    
+      let (:station_double) { double('London bridge') }
+      let (:station_double_exit) { double('Bank') }
     
     it 'report journey status ' do 
     expect(subject.journey?).to eq(false)
@@ -35,7 +38,7 @@ describe Oystercard do
 
     it 'responds to touch in' do 
       subject.top_up(Oystercard::MIN_CHARGE) 
-      expect(subject.touch_in(station_double)).to eq(true)
+      expect(subject.touch_in(:station_double)).to eq(true)
     end 
 
     it 'responds to touch_out' do 
@@ -43,77 +46,71 @@ describe Oystercard do
     end 
 
     it 'raise error if funds are insufficent' do 
-      expect{ subject.touch_in(station_double) }.to raise_error 'not enough funds'
+      expect{ subject.touch_in(:station_double) }.to raise_error 'not enough funds'
     end 
 
     it 'deducts the right amount when touched out' do 
       expect{ subject.touch_out(:station_double_exit) }.to change { subject.balance }.by(- Oystercard::MIN_CHARGE)
     end 
    end 
-
-   describe '#double' do 
-    it 'card remembers the entry station ' do 
-      subject.top_up(Oystercard::MIN_CHARGE) 
-      subject.touch_in(:station_double)
-      expect(subject.entry_station).to eq(:station_double)
-
-    end 
-
-    it 'card forgets entry station ' do 
-      subject.top_up(Oystercard::MIN_CHARGE) 
-      subject.touch_in(:station_double)
-      subject.touch_out(:station_double_exit)
-      expect(subject.entry_station).to eq(nil)
-    end 
-   end 
-
-   it 'stores exit station' do
-    subject.top_up(Oystercard::MIN_CHARGE) 
-    subject.touch_in(:station_double)
-    subject.touch_out(:station_double_exit)
-    expect(subject.exit_station).to eq(:station_double_exit)
   end
 
+  #  describe '#Check doubles work' do 
+  # 
+  #   it 'card remembers the entry station ' do 
+  #     subject.top_up(Oystercard::MIN_CHARGE) 
+  #     subject.touch_in(:station_double)
+  #     expect(subject.entry_station).to eq(:station_double)
+  #   end 
+
+  #   it 'card forgets entry station ' do 
+  #     subject.top_up(Oystercard::MIN_CHARGE) 
+  #     subject.touch_in(:station_double)
+  #     subject.touch_out(:station_double_exit)
+  #     expect(subject.entry_station).to eq(nil)
+  #   end 
+  #  end 
+
+  #  it 'stores exit station' do
+  #   subject.top_up(Oystercard::MIN_CHARGE) 
+  #   subject.touch_in(:station_double)
+  #   subject.touch_out(:station_double_exit)
+  #   expect(subject.exit_station).to eq(:station_double_exit)
+  # end
 
 
    describe '#list of journeys' do 
-    it 'see the array of journeys' do 
-    expect(subject.journeys).to be_an(Array)
-    end 
+  
+    context 'No journeys started' do
+      it 'see the array of journeys' do 
+      expect(subject.journeys).to be_an(Array)
+      end 
 
-    #checking if the array is empty 
-    it 'has an empty lists of journeys by default' do 
-      expect(subject.journeys.empty?).to eq(true) # .to be_empty
-    end 
+      #checking if the array is empty 
+      it 'has an empty lists of journeys by default' do 
+        expect(subject.journeys.empty?).to eq(true) # .to be_empty
+      end 
+    end
 
-    it 'checks that touch in and touch out create one journey' do 
-      subject.top_up(Oystercard::MIN_CHARGE) 
-      subject.touch_in(:station_double)
-      subject.touch_out(:station_double_exit)
-      expect(subject.journeys.length).to eq(1)
+    context 'Journey completed' do
+      let(:journey){ {entry: :station_double, exit: :station_double_exit } }
+
+      it ' Touch in and touch out create one journey' do 
+        subject.top_up(Oystercard::MIN_CHARGE) 
+        subject.touch_in(:station_double)
+        subject.touch_out(:station_double_exit)
+        expect(subject.journeys.length).to eq(1)
+      end 
+
+      it ' Stores a specfic journey' do 
+        subject.top_up(Oystercard::MIN_CHARGE) 
+        subject.touch_in(:station_double)
+        subject.touch_out(:station_double_exit)
+        expect(subject.journeys).to include journey
+      end
    end 
-
-   let(:journey){ {'entry' => :station_double, 'exit' => :station_double_exit } }
-
-   it 'stores a journey' do 
-   subject.top_up(Oystercard::MIN_CHARGE) 
-   subject.touch_in(:station_double)
-   subject.touch_out(:station_double_exit)
-   expect(subject.journeys).to include journey
-
-   end 
-
-
-
 
   end 
   
-   
-
-
-
-
-
-
 end
 

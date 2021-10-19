@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Oystercard
-  attr_reader :balance, :journeys, :exit_station
+  attr_reader :balance, :journeys#, :exit_station
 
   MAX_CARD_BALANCE = 90
 
@@ -28,51 +28,45 @@ class Oystercard
   end 
 
   def touch_out(station)
-    
     deduct(MIN_CHARGE)
-
     assign_exit(station)
-
-    storing_journeys
-
-    @entry_station = nil 
-
+    store_journeys
+    # @entry_station = nil 
     journey? 
   end 
 
   def assign_entry(station)
-    @journey = {'entry' => station}
+    @journey[:entry] = station
   end 
 
   def assign_exit(station)
-    @journey = {'exit' => station}
+    @journey[:exit] = station
   end 
 
 
 
   def journey? 
-
     # true if @entry_station != nil 
     # false if @entry_station == nil 
-    if @entry_station == nil 
+    # if @entry_station == nil 
+    if @journey[:entry] == nil 
       return false  
     else 
       return true
     end 
   end 
   
-
   private 
 
   def deduct(amount)
     @balance -= amount
   end
 
-  def storing_journeys
+  def store_journeys
     # journey = { 'entry' => @entry_station, 'exit' => @exit_station} 
     journeys << @journey 
-
+    puts journeys
+    journey = {}
   end 
-
 
 end
