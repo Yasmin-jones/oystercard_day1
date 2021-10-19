@@ -32,4 +32,26 @@ describe Oystercard do
       end
     end
   end
+
+   describe '#Journey' do 
+    it 'report journey status ' do 
+    expect(subject.in_journey).to eq(false)
+    end 
+
+    it 'responds to touch in' do 
+      expect(subject.touch_in).to eq(true)
+    end 
+
+    it 'responds to touch_out' do 
+      expect(subject.touch_out).to eq(false)
+    end 
+
+   end 
+
+
+
+
+
+
 end
+
