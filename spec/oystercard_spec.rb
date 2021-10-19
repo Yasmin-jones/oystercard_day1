@@ -39,12 +39,19 @@ describe Oystercard do
     end 
 
     it 'responds to touch in' do 
+      subject.top_up(Oystercard::MIN_CHARGE) 
       expect(subject.touch_in).to eq(true)
     end 
 
     it 'responds to touch_out' do 
       expect(subject.touch_out).to eq(false)
     end 
+
+    it 'raise error if funds are insufficent' do 
+      expect{ subject.touch_in }.to raise_error 'not enough funds'
+    end 
+
+
 
    end 
 
