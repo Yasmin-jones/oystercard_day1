@@ -86,7 +86,7 @@ describe Oystercard do
       expect(subject.journeys).to be_an(Array)
       end 
 
-      #checking if the array is empty 
+      #checking if the array is empty before it starts 
       it 'has an empty lists of journeys by default' do 
         expect(subject.journeys.empty?).to eq(true) # .to be_empty
       end 
@@ -106,7 +106,7 @@ describe Oystercard do
         subject.top_up(Oystercard::MIN_CHARGE) 
         subject.touch_in(:station_double)
         subject.touch_out(:station_double_exit)
-        expect(subject.journeys).to include journey
+        expect(subject.journeys).to include journey # journey = { 'entry' => @entry_station, 'exit' => @exit_station} 
       end
    end 
 

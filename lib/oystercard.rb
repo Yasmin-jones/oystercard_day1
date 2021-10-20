@@ -11,7 +11,7 @@ class Oystercard
     @balance = 0
     # @entry_station = nil 
     @journeys = [] 
-    @exit_station = nil 
+    # @exit_station = nil 
     @journey = Hash.new 
   end
 
@@ -67,6 +67,9 @@ class Oystercard
     journeys << @journey 
     puts journeys
     journey = {}
+
+    p journey
   end 
 
 end
+
